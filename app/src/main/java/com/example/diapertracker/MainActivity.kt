@@ -3,6 +3,7 @@ package com.example.diapertracker
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -40,6 +41,18 @@ class MainActivity : AppCompatActivity() {
         currentTime = findViewById(R.id.main_et_time)
         diaperChangesText = findViewById(R.id.main_tv_diaper_changes)
         diaperChangesCount = findViewById(R.id.main_tv_diaper_count)
+
+        //check onSaveInstanceState
+        if(savedInstanceState != null){
+            diaperChangesText.text = savedInstanceState.getString("diaperChanges")
+            diaperChangesCount.text = savedInstanceState.getString("diaperCount")
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putString("diaperChanges", diaperChangesText.text.toString())
+        outState.putString("diaperCount", diaperChangesCount.text.toString())
     }
 
     //Create a new diaper to add to a list
