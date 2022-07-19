@@ -9,6 +9,6 @@
     <string name="button_clear_text">Clear all</string>
     <string name="header_text">--Diaper Tracker--</string>
     <string name="baby_description">a simple baby</string>
-    <string name="placeholder_diaper_changes">18 diapers changed!!!</string>
-    <string name="placeholder_diaper_count_text">20 diapers changed!</string>
+    <string name="placeholder_diaper_changes"></string>
+    <string name="placeholder_diaper_count_text"></string>
 </resources>

@@ -1,10 +1,13 @@
 package com.example.diapertracker
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.TextKeyListener.clear
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat.getSystemService
 import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
@@ -42,19 +45,23 @@ class MainActivity : AppCompatActivity() {
     //Create a new diaper to add to a list
     private fun addNewDiaper(){
         //Get the current time
-        val timeOfChange = currentTime.text.toString()
+        var timeOfChange = currentTime.text.toString()
+        if(timeOfChange == ""){
+            timeOfChange = "00:00"
+        }
 
         var newDiaper = ""
 
-        if(dirtyButton.isChecked){
-            //Log.i("test", "Dirty Diaper Changed")
-            newDiaper = "- A dirty diaper was changed at $timeOfChange"
-        } else if(wetButton.isChecked){
-            //Log.i("test", "Wet")
-            newDiaper = "- A wet diaper was changed at $timeOfChange"
-        } else {
-            //Log.i("test", "dry")
-            newDiaper = "- A dry diaper was changed at $timeOfChange"
+        newDiaper = when{
+            dirtyButton.isChecked -> {
+                "- A dirty diaper was changed at $timeOfChange"
+            }
+            wetButton.isChecked -> {
+                "- A wet diaper was changed at $timeOfChange"
+            }
+            else -> {
+                "-A dry diaper was changed at $timeOfChange"
+            }
         }
 
         //increment diaper counter
@@ -74,10 +81,26 @@ class MainActivity : AppCompatActivity() {
         diaperChangesText.text = updatedDiapers
 
         diaperChangesCount.text = "$diaperCount total diapers changed."
+
+        //Clear the edit text
+        currentTime.setText("")
+
+        //Hide the keyboard
+        hideKeyboard()
     }
 
     //Clear all entered diapers from our list
     private fun clear() {
+        //reset all UI and counter
+        diaperCount = 0
+        diaperChangesText.text = ""
+        diaperChangesCount.text = ""
 
+    }
+
+    //Hide keyboard
+    private fun hideKeyboard(){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentTime.windowToken, 0)
     }
 }
